@@ -1,5 +1,5 @@
-import { ApplicationDb } from '../application.db';
-import { Answer } from 'app/entry/entry-content/questions/answer.model';
+import {ApplicationDb} from '../application.db';
+import {Answer} from 'app/entry/entry-content/questions/answer.model';
 
 export class Pia extends ApplicationDb {
   public id: number;
@@ -159,12 +159,14 @@ export class Pia extends ApplicationDb {
         }
         fetch(this.getServerUrl(), {
           method: 'POST',
-          body: formData
+          body: formData,
+          mode : 'cors',
+          credentials : 'include'
         }).then((response) => {
           return response.json();
         }).then((result: any) => {
           resolve(result.id);
-        }).catch ((error) => {
+        }).catch((error) => {
           console.error('Request failed', error);
           reject();
         });
@@ -225,12 +227,14 @@ export class Pia extends ApplicationDb {
           }
           fetch(this.getServerUrl() + '/' + entry.id, {
             method: 'PATCH',
-            body: formData
+            body: formData,
+            mode: 'cors',
+            credentials : 'include'
           }).then((response) => {
             return response.json();
           }).then((result: any) => {
             resolve();
-          }).catch ((error) => {
+          }).catch((error) => {
             console.error('Request failed', error);
             reject();
           });
@@ -342,7 +346,11 @@ export class Pia extends ApplicationDb {
   async getPiaExample() {
     return new Promise((resolve, reject) => {
       if (this.serverUrl) {
-        fetch(this.getServerUrl() + '/' + 'example').then((response) => {
+        fetch(this.getServerUrl() + '/' + 'example', {
+            mode: 'cors',
+            credentials : 'include'
+          }
+        ).then((response) => {
           return response.json();
         }).then((result: any) => {
           resolve(result);
@@ -359,36 +367,36 @@ export class Pia extends ApplicationDb {
             reject(Error(event));
           }
           evt.onsuccess = (event: any) => {
-              const entry = event.target.result;
-              if (entry) {
-                this.id = entry.id;
-                this.status = entry.status;
-                this.is_example = entry.is_example;
-                this.name = entry.name;
-                this.author_name = entry.author_name;
-                this.evaluator_name = entry.evaluator_name;
-                this.validator_name = entry.validator_name;
-                this.dpo_status = entry.dpo_status;
-                this.dpo_opinion = entry.dpo_opinion;
-                this.concerned_people_opinion = entry.concerned_people_opinion;
-                this.concerned_people_status = entry.concerned_people_status;
-                this.rejected_reason = entry.rejected_reason;
-                this.applied_adjustements = entry.applied_adjustements;
-                this.created_at = new Date(entry.created_at);
-                this.updated_at = new Date(entry.updated_at);
-                this.dpos_names = entry.dpos_names;
-                this.people_names = entry.people_names;
-                this.concerned_people_searched_opinion = entry.concerned_people_searched_opinion;
-                this.concerned_people_searched_content = entry.concerned_people_searched_content;
-                this.structure_id = entry.structure_id;
-                this.structure_name = entry.structure_name;
-                this.structure_sector_name = entry.structure_sector_name;
-                this.structure_data = entry.structure_data;
-                resolve(entry);
-              } else {
-                resolve(false);
-              }
+            const entry = event.target.result;
+            if (entry) {
+              this.id = entry.id;
+              this.status = entry.status;
+              this.is_example = entry.is_example;
+              this.name = entry.name;
+              this.author_name = entry.author_name;
+              this.evaluator_name = entry.evaluator_name;
+              this.validator_name = entry.validator_name;
+              this.dpo_status = entry.dpo_status;
+              this.dpo_opinion = entry.dpo_opinion;
+              this.concerned_people_opinion = entry.concerned_people_opinion;
+              this.concerned_people_status = entry.concerned_people_status;
+              this.rejected_reason = entry.rejected_reason;
+              this.applied_adjustements = entry.applied_adjustements;
+              this.created_at = new Date(entry.created_at);
+              this.updated_at = new Date(entry.updated_at);
+              this.dpos_names = entry.dpos_names;
+              this.people_names = entry.people_names;
+              this.concerned_people_searched_opinion = entry.concerned_people_searched_opinion;
+              this.concerned_people_searched_content = entry.concerned_people_searched_content;
+              this.structure_id = entry.structure_id;
+              this.structure_name = entry.structure_name;
+              this.structure_sector_name = entry.structure_sector_name;
+              this.structure_data = entry.structure_data;
+              resolve(entry);
+            } else {
+              resolve(false);
             }
+          }
         });
       }
     });
@@ -443,6 +451,3 @@ export class Pia extends ApplicationDb {
     }
   }
 }
-
-
-
